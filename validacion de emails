@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación de Email en JavaScript</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #mensaje {
+            margin-top: 10px;
+            padding: 10px;
+            display: none;
+        }
+        .error {
+            background-color: #f44336;
+            color: white;
+        }
+        .exito {
+            background-color: #4CAF50;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Validación de Email en JavaScript</h1>
+    <p>Ingresa un email y haz clic en "Validar" para probar la validación.</p>
+    
+    <form id="formEmail">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <button type="submit">Validar</button>
+    </form>
+    
+    <div id="mensaje"></div>
+
+    <script>
+        // Función de validación de email usando regex mejorada
+        function validarEmail(email) {
+            // Regex para validar formato de email (compatible con la mayoría de casos comunes)
+            const regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+            
+            // Verifica si el email está vacio
+            if (!email.trim()) {
+                return { esValido: false, mensaje: 'El email no puede estar vacío.' };
+            }
+            
+            // Verifica con regex
+            if (!regex.test(email.trim())) {
+                return { esValido: false, mensaje: 'Formato de email inválido. Ejemplo: usuario@dominio.com' };
+            }
+            
+            return { esValido: true, mensaje: '¡Email válido!' };
+        }
+
+        // Maneja el envío del formulario
+        document.getElementById('formEmail').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const resultado = validarEmail(email);
+            const mensajeDiv = document.getElementById('mensaje');
+            
+            mensajeDiv.textContent = resultado.mensaje;
+            mensajeDiv.className = resultado.esValido ? 'exito' : 'error';
+            mensajeDiv.style.display = 'block';
+        });
+
+        // Ejemplos de uso en consola 
+        console.log('Ejemplos de validación:');
+        console.log(validarEmail('test@example.com'));     // Válido
+        console.log(validarEmail('test@sub.dominio.com')); // Válido
+        console.log(validarEmail('invalid-email'));        // Inválido
+        console.log(validarEmail('test@.com'));            // Inválido
+        console.log(validarEmail(''));                     // Inválido
+    </script>
+</body>
+</html>
